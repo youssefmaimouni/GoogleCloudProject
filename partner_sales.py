@@ -33,9 +33,9 @@ def generate_sales_data(start_date, num_days, orders_per_day, output_path_base, 
         output_dir = os.path.join(output_path_base, date_str)
         os.makedirs(output_dir, exist_ok=True)  # Crée le dossier s'il n'existe pas
 
-        output_file_path = os.path.join(output_dir, "orders.csv")
+        output_file_path = os.path.join(output_dir, f"{channel_prefix}_orders.csv")
 
-        print(f"Generating data for {channel_prefix} channel on {date_str} into {output_file_path}...")
+        print(f"Generating data for partner channel on {date_str} into {output_file_path}...")
 
         with open(output_file_path, 'w', newline='') as csvfile:
             fieldnames = ['order_id', 'client_id', 'product_id', 'country',
