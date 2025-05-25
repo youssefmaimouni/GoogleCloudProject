@@ -1,0 +1,35 @@
+{
+    "BigQuery Schema": [{
+            "name": "order_id",
+            "type": "STRING"
+        },
+        {
+            "name": "client_id",
+            "type": "INTEGER"
+        },
+        {
+            "name": "product_id",
+            "type": "INTEGER"
+        },
+        {
+            "name": "country",
+            "type": "STRING"
+        },
+        {
+            "name": "order_date",
+            "type": "DATE"
+        },
+        {
+            "name": "quantity",
+            "type": "INTEGER"
+        },
+        {
+            "name": "unit_price",
+            "type": "FLOAT"
+        },
+        {
+            "name": "status",
+            "type": "STRING"
+        }
+    ]
+}

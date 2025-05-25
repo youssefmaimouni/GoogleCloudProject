@@ -1,0 +1,18 @@
+"parameters": {
+        "inputFilePattern": "gs://bucket_globalshop/*/*.csv",
+        "JSONPath": "gs://bucket_globalshop/bq.json",
+        "outputTable": "celestial-sum-459520-b1:orders.ordersPerDay",
+        "bigQueryLoadingTemporaryDirectory": "gs://metadata_bucket_gb",
+        "javascriptTextTransformGcsPath": "gs://bucket_globalshop/udf.js",
+        "javascriptTextTransformFunctionName": "transform"
+    }
+
+
+    "parameters": {
+        "inputFilePattern": "gs://e-commerce212/*/*.csv",
+        "JSONPath": "gs://e-commerce-metadata/bq.json",
+        "outputTable": "cloud-project212:staging_dataset.orders",
+        "bigQueryLoadingTemporaryDirectory": "gs://e-commerce-metadata",
+        "javascriptTextTransformGcsPath": "gs://e-commerce-metadata/udf.js",
+        "javascriptTextTransformFunctionName": "transform"
+    }
