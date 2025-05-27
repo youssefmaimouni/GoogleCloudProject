@@ -23,10 +23,19 @@ MAX_PRODUCT_ID = 10000
 
 def generate_sales_data(start_date, num_days, orders_per_day, output_path_base, channel_prefix):
     current_order_id_counter = 1  # Compteur simple pour les order_id
+    # Génère un facteur de variation pour chaque jour (ex. : [0.8, 1.1, 0.9, 1.3, 0.7])
+    daily_factors = [round(random.uniform(0.7, 1.3), 2) for _ in range(num_days)]
 
     for day_offset in range(num_days):
         current_simulation_date = start_date + timedelta(days=day_offset)
         date_str = current_simulation_date.strftime("%Y-%m-%d")
+
+        # Détermine le nombre de commandes pour ce jour
+        # PARTNER SALES - variation imposée
+        daily_factors = [1.0, 1.2, 1.5, 0.6, 1.3]  # Moyenne, Haut, Très haut, Bas, Moyen
+
+        factor = daily_factors[day_offset]
+        daily_orders = int(orders_per_day * factor)
 
         # Créer le chemin du dossier de sortie
         # ex: local_data/globalshop-raw/2025-04-01/
@@ -43,16 +52,21 @@ def generate_sales_data(start_date, num_days, orders_per_day, output_path_base, 
             writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
             writer.writeheader()
 
-            for i in range(orders_per_day):
+            for i in range(daily_orders):
                 order_id = f"{channel_prefix}-{date_str.replace('-', '')}-{current_order_id_counter + i}"
-                client_id = random.randint(1, MAX_CLIENT_ID)
-                product_id = random.randint(1, MAX_PRODUCT_ID)
-                country = random.choice(COUNTRIES)
                 order_date = date_str  # La date de la commande est la date du jour de simulation
-                quantity = random.randint(1, 10)
-                unit_price = round(random.uniform(5.0, 500.0), 2)
+                country = random.choices(["USA", "UK", "Germany", "Canada", "France"], weights=[40, 25, 20, 10, 5])[0]
+                unit_price = round(random.uniform(150.0, 500.0), 2)
+                quantity = random.randint(5, 20)
+                client_id = random.randint(1, 30000)
+                product_id = random.choices(
+                    population=list(range(1000, 3000)),
+                    weights=[5 if i % 100 == 0 else 1 for i in range(1000, 3000)],
+                    k=1
+                )[0]
+
                 # Pourrait avoir un biais, ex: 80% PAID, 20% CANCELLED
-                status = random.choices(STATUSES, weights=[0.85, 0.15], k=1)[0]
+                status = random.choices(STATUSES, weights=[0.95, 0.05], k=1)[0]
 
                 writer.writerow({
                     'order_id': order_id,
@@ -64,8 +78,8 @@ def generate_sales_data(start_date, num_days, orders_per_day, output_path_base, 
                     'unit_price': unit_price,
                     'status': status
                 })
-            current_order_id_counter += orders_per_day  # Mettre à jour le compteur pour le prochain jour (ou globalement)
-        print(f"Generated {orders_per_day} orders for {date_str}.")
+            current_order_id_counter += daily_orders  # Mettre à jour le compteur pour le prochain jour (ou globalement)
+        print(f"Generated {daily_orders} orders for {date_str}.")
 
 
 if __name__ == "__main__":
