@@ -5,8 +5,8 @@ import os
 import uuid # Pour des order_id plus uniques si besoin, sinon un compteur suffit
 
 # Configuration initiale (vous pourrez ajuster ces valeurs)
-SIMULATION_START_DATE = datetime(2025, 4, 1)
-NUM_DAYS_TO_SIMULATE = 5 # Simuler pour 5 jours
+SIMULATION_START_DATE = datetime(2025, 4, 3)
+NUM_DAYS_TO_SIMULATE = 3 # Simuler pour 5 jours
 ORDERS_PER_DAY_WEBSITE = 170000 # Viser environ 1/3 du total de 500k
 BASE_OUTPUT_PATH = "local_data/globalshop-raw" # Simule le bucket GCS localement
 CHANNEL_PREFIX = "WEB" # Pour aider à rendre les order_id uniques par canal
@@ -30,11 +30,11 @@ def generate_sales_data(start_date, num_days, orders_per_day, output_path_base, 
 
         # Détermine le nombre de commandes pour ce jour
         # PARTNER SALES - variation imposée
-        daily_factors = [1.5, 1.0, 2.2, 2.8, 2.5]  # Moyenne, Haut, Très haut, Bas, Moyen
+        daily_factors = [1.3, 1.5, 0.9]  # Moyenne, Haut, Très haut, Bas, Moyen
 
         factor = daily_factors[day_offset]
         daily_orders = int(orders_per_day * factor)
-
+        print(daily_orders)
         # Créer le chemin du dossier de sortie
         # ex: local_data/globalshop-raw/2025-04-01/
         output_dir = os.path.join(output_path_base, date_str)
